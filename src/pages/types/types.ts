@@ -3,6 +3,8 @@ import { NavController } from 'ionic-angular';
 
 import { ExpenseType } from './expense-type';
 import { ExpenseTypesService } from './expense-types.service';
+import { AddTypePage} from './add-type'
+import { UpdateTypePage} from './update-type'
 
 @Component({
   selector: 'page-types',
@@ -11,7 +13,6 @@ import { ExpenseTypesService } from './expense-types.service';
 export class TypesPage {
 
   types: ExpenseType[] = [];
-  selectedType: ExpenseType;
 
   constructor(public navCtrl: NavController, private expenseTypesService: ExpenseTypesService) {}
   
@@ -19,28 +20,17 @@ export class TypesPage {
     this.expenseTypesService.getTypes().then(types => this.types = types);
   }
 
-  addType(code: string, description: string): void {
-	  code = code.trim();
-	  description = description.trim();
-	  if (!code || !description) { return; }
-	  this.expenseTypesService.create(code,description)
-		.then(type => {
-		  this.types.push(type);
-		  this.selectedType = null;
-		});
+  addType(): void {
+    this.navCtrl.push(AddTypePage, {
+        types: this.types
+    });
   }
-  
-  deleteType(type: ExpenseType): void {
-	  this.expenseTypesService
-		  .delete(type.id)
-		  .then(() => {
-			this.types = this.types.filter(t => t !== type);
-			if (this.selectedType === type) { this.selectedType = null; }
-		  });
-  }
-  
+
   updateType(type: ExpenseType): void {
-        
+    this.navCtrl.push(UpdateTypePage, {
+        type: type,
+        types: this.types
+    });  
   }
   
   ngOnInit(): void {

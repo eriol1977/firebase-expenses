@@ -30,6 +30,14 @@ export class ExpenseTypesService {
                 .catch(this.handleError);
     }
 
+    createType(type: ExpenseType): Promise<ExpenseType> {
+        return this.http
+                .post(this.typesUrl, JSON.stringify(type), {headers: this.headers})
+                .toPromise()
+                .then(response => response.json() as ExpenseType)
+                .catch(this.handleError);
+    }
+
     create(code: string, description: string): Promise<ExpenseType> {
         return this.http
                 .post(this.typesUrl, JSON.stringify({code: code, description: description}), {headers: this.headers})

@@ -8,16 +8,17 @@
 </ion-header>
 
 <ion-content padding>
-    <button ion-button full icon-left>
-        <ion-icon name="add-circle"></ion-icon>
-        Add
-    </button>
+    <div text-center>
+        <button ion-button icon-left (click)="addType()">
+            <ion-icon name="add-circle"></ion-icon>
+            Nuovo
+        </button>
+    </div>
     <br/>
     <ion-list>
-        <ion-item *ngFor="let type of types">
-            {{type.description}}
-            <button ion-button icon-only item-right outline><ion-icon name="create"></ion-icon></button>
-            <button ion-button icon-only item-right outline><ion-icon name="remove-circle"></ion-icon></button>
-        </ion-item>
+        <button ion-item *ngFor="let type of types" (click)="updateType(type)">
+            {{type.code}} - {{type.description}}
+            <button ion-button icon-only item-right clear (click)="updateType(type); $event.stopPropagation()"><ion-icon name="arrow-forward"></ion-icon></button>
+        </button>
     </ion-list>
 </ion-content>

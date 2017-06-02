@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Aggiorna Tipo di Spesa</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <form (ngSubmit)="updateType()">
+        <ion-item>
+          <ion-label>Codice</ion-label>
+          <ion-input [(ngModel)]="type.code" name="code"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Descrizione</ion-label>
+          <ion-input [(ngModel)]="type.description" name="description"></ion-input>
+        </ion-item>
+        <br/>
+        <div text-center>
+            <button ion-button icon-left type="submit">
+                <ion-icon name="create"></ion-icon>
+                Aggiorna
+            </button>
+        </div>
+    </form>
+    <br/>
+    <div text-center>
+        <button ion-button icon-left (click)="confirmDelete()">
+            <ion-icon name="trash"></ion-icon>
+            Elimina
+        </button>
+    </div>
+</ion-content>
