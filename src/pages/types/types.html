@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Tipi di Spesa</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <button ion-button full icon-left>
+        <ion-icon name="add-circle"></ion-icon>
+        Add
+    </button>
+    <br/>
+    <ion-list>
+        <ion-item *ngFor="let type of types">
+            {{type.description}}
+            <button ion-button icon-only item-right outline><ion-icon name="create"></ion-icon></button>
+            <button ion-button icon-only item-right outline><ion-icon name="remove-circle"></ion-icon></button>
+        </ion-item>
+    </ion-list>
+</ion-content>
