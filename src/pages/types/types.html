@@ -4,21 +4,18 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Tipi di Spesa</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="addType()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <div text-center>
-        <button ion-button icon-left (click)="addType()">
-            <ion-icon name="add-circle"></ion-icon>
-            Nuovo
-        </button>
-    </div>
-    <br/>
     <ion-list>
-        <button ion-item *ngFor="let type of types" (click)="updateType(type)">
+        <ion-item *ngFor="let type of types | async" (click)="showOptions(type.$key, type.code, type.description)">
             {{type.code}} - {{type.description}}
-            <button ion-button icon-only item-right clear (click)="updateType(type); $event.stopPropagation()"><ion-icon name="arrow-forward"></ion-icon></button>
-        </button>
+        </ion-item>
     </ion-list>
 </ion-content>

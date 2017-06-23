@@ -1,10 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
-
-import { ExpenseType } from './expense-type';
-import { ExpenseTypesService } from './expense-types.service';
-import { AddTypePage} from './add-type'
-import { UpdateTypePage} from './update-type'
+import { Component } from '@angular/core';
+import { NavController, AlertController, ActionSheetController } from 'ionic-angular';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 @Component({
   selector: 'page-types',
@@ -12,28 +8,106 @@ import { UpdateTypePage} from './update-type'
 })
 export class TypesPage {
 
-  types: ExpenseType[] = [];
+    types: FirebaseListObservable<any>;
 
-  constructor(public navCtrl: NavController, private expenseTypesService: ExpenseTypesService) {}
+    constructor(public navCtrl: NavController, 
+                public alertCtrl: AlertController, 
+                public actionSheetCtrl: ActionSheetController,
+                db: AngularFireDatabase) {
+        this.types = db.list('/types');
+    }
   
-  getTypes(): void {
-    this.expenseTypesService.getTypes().then(types => this.types = types);
-  }
+    addType(): void {
+        let prompt = this.alertCtrl.create({
+            title: 'Tipo di Spesa',
+            inputs: [
+                {
+                    name: 'code',
+                    placeholder: 'Codice'
+                },
+                {
+                    name: 'description',
+                    placeholder: 'Descrizione'
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Annulla',
+                    handler: data => {}
+                },
+                {
+                    text: 'Salva',
+                    handler: data => {
+                        this.types.push({
+                            code: data.code,
+                            description: data.description
+                        });
+                    }
+                }
+            ]
+        });
+        prompt.present();
+    }
 
-  addType(): void {
-    this.navCtrl.push(AddTypePage, {
-        types: this.types
-    });
-  }
-
-  updateType(type: ExpenseType): void {
-    this.navCtrl.push(UpdateTypePage, {
-        type: type,
-        types: this.types
-    });  
-  }
-  
-  ngOnInit(): void {
-    this.getTypes();
-  }
+    showOptions(id, code, description) {
+        let actionSheet = this.actionSheetCtrl.create({
+            buttons: [
+                {
+                    text: 'Elimina',
+                    role: 'destructive',
+                    handler: () => {
+                        this.removeType(id);
+                    }
+                },{
+                    text: 'Modifica',
+                    handler: () => {
+                        this.updateType(id, code, description);
+                    }
+                },{
+                    text: 'Annulla',
+                    role: 'cancel',
+                    handler: () => {}
+                }
+            ]
+        });
+        actionSheet.present();
+    }
+    
+    removeType(id: string){
+        this.types.remove(id);
+    }
+    
+    updateType(id, code, description): void {
+        let prompt = this.alertCtrl.create({
+            title: 'Tipo di Spesa',
+            inputs: [
+                {
+                    name: 'code',
+                    placeholder: 'Codice',
+                    value: code
+                },
+                {
+                    name: 'description',
+                    placeholder: 'Descrizione',
+                    value: description
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Annulla',
+                    handler: data => {}
+                },
+                {
+                    text: 'Salva',
+                    handler: data => {
+                        this.types.update(id, {
+                            code: data.code,
+                            description: data.description
+                        });
+                    }
+                }
+            ]
+        });
+        prompt.present();
+    }
 }

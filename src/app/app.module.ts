@@ -13,6 +13,21 @@ import { ExpenseTypesService }     from '../pages/types/expense-types.service';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+// Import the AF2 Module
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+ 
+// AF2 Settings
+export const firebaseConfig = {
+    apiKey: "AIzaSyBL4sl3R3JUy92uARxSt0-yek1bha4ogVo",
+    authDomain: "expenses-743fd.firebaseapp.com",
+    databaseURL: "https://expenses-743fd.firebaseio.com",
+    projectId: "expenses-743fd",
+    storageBucket: "expenses-743fd.appspot.com",
+    messagingSenderId: "780330921940"
+};
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -23,7 +38,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpModule
+    HttpModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
