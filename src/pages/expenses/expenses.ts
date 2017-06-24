@@ -1,58 +1,41 @@
-import { Component } from '@angular/core';
-import { NavController, AlertController, ActionSheetController } from 'ionic-angular';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import {Component} from '@angular/core';
+import {NavController, AlertController, ActionSheetController, ModalController} from 'ionic-angular';
+import {AngularFireDatabase, FirebaseListObservable} from 'angularfire2/database';
+import {Expense} from './expense';
 
 @Component({
-  selector: 'page-expenses',
-  templateUrl: 'expenses.html'
+    selector: 'page-expenses',
+    templateUrl: 'expenses.html'
 })
 export class ExpensesPage {
     expenses: FirebaseListObservable<any>;
     date: string;
 
-    constructor(public navCtrl: NavController, 
-                public alertCtrl: AlertController, 
-                public actionSheetCtrl: ActionSheetController,
-                db: AngularFireDatabase) {
-        this.date = new Date().toISOString();
-        this.expenses = db.list('/expenses');
+    constructor(public navCtrl: NavController,
+        public alertCtrl: AlertController,
+        public actionSheetCtrl: ActionSheetController,
+        public modalCtrl: ModalController,
+        db: AngularFireDatabase) {
+            this.date = new Date().toISOString();
+            this.expenses = db.list('/expenses');
     }
-    
+
     addExpense(): void {
-        let prompt = this.alertCtrl.create({
-            title: 'Spesa',
-            inputs: [
-                {
-                    name: 'date',
-                    placeholder: 'gg/mm/aaaa',
-                    type: 'date' 
-                },
-                {
-                    name: 'value',
-                    placeholder: '999.99',
-                    type: 'number' 
-                }
-            ],
-            buttons: [
-                {
-                    text: 'Annulla',
-                    handler: data => {}
-                },
-                {
-                    text: 'Salva',
-                    handler: data => {
-                        this.expenses.push({
-                            date: data.date,
-                            value: data.value
-                        });
-                    }
-                }
-            ]
+        let modal = this.modalCtrl.create(Expense, {date: this.date.substring(0, 10)},{enableBackdropDismiss: false});
+        modal.onDidDismiss(data => {
+            if (data.save) {
+                this.expenses.push({
+                    date: data.date,
+                    value: data.value,
+                    type: data.type,
+                    notes: data.notes
+                });
+            }
         });
-        prompt.present();
+        modal.present();
     }
-    
-    showOptions(id: string, value: string) {
+
+    showOptions(id: string, date: string, value: string, type: any, notes: string) {
         let actionSheet = this.actionSheetCtrl.create({
             buttons: [
                 {
@@ -61,12 +44,12 @@ export class ExpensesPage {
                     handler: () => {
                         this.removeExpense(id);
                     }
-                },{
+                }, {
                     text: 'Modifica',
                     handler: () => {
-                        this.updateExpense(id, value);
+                        this.updateExpense(id, date, value, type, notes);
                     }
-                },{
+                }, {
                     text: 'Annulla',
                     role: 'cancel',
                     handler: () => {}
@@ -75,37 +58,23 @@ export class ExpensesPage {
         });
         actionSheet.present();
     }
-    
-    removeExpense(id: string){
+
+    removeExpense(id: string) {
         this.expenses.remove(id);
     }
-    
-    updateExpense(id: string, value: string): void {
-        let prompt = this.alertCtrl.create({
-            title: 'Spesa',
-            inputs: [
-                {
-                    name: 'value',
-                    placeholder: 'Valore',
-                    type: 'number',
-                    value: parseFloat(value).toFixed(2)
-                }
-            ],
-            buttons: [
-                {
-                    text: 'Annulla',
-                    handler: data => {}
-                },
-                {
-                    text: 'Salva',
-                    handler: data => {
-                        this.expenses.update(id, {
-                            value: data.value
-                        });
-                    }
-                }
-            ]
+
+    updateExpense(id: string, date: string, value: string, type: any, notes: string): void {
+        let modal = this.modalCtrl.create(Expense, {date: date, value: parseFloat(value).toFixed(2), typeCode: type.code, notes: notes},{enableBackdropDismiss: false});
+        modal.onDidDismiss(data => {
+            if (data.save) {
+                this.expenses.update(id, {
+                    date: data.date,
+                    value: data.value,
+                    type: data.type,
+                    notes: data.notes
+                });
+            }
         });
-        prompt.present();
+        modal.present();
     }
 }

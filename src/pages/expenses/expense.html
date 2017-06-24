@@ -1,0 +1,22 @@
+<ion-content padding>
+    <ion-item>
+        <ion-label>Data</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="date"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>Valore</ion-label>
+        <ion-input type="number" [(ngModel)]="value"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Tipo</ion-label>
+        <ion-select interface="popover" [(ngModel)]="typeCode">
+            <ion-option *ngFor="let t of types | async" [value]="t.code">{{t.description}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>Note</ion-label>
+        <ion-textarea [(ngModel)]="notes" placeholder="Eventuali note"></ion-textarea>
+    </ion-item>
+    <button ion-button (click)="dismiss(true)">Salva</button>
+    <button ion-button (click)="dismiss(false)">Annulla</button>
+</ion-content>
