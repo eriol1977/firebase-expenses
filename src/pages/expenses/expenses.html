@@ -15,11 +15,24 @@
 <ion-content padding>
     <ion-item>
         <ion-label>Data</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="date"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="date" (ionChange)="onDateChanged()"></ion-datetime>
     </ion-item>
     <ion-list>
-        <ion-item *ngFor="let expense of expenses | async" (click)="showOptions(expense.$key, expense.date, expense.value, expense.type, expense.notes)">
-            {{expense.date | date:'dd/MM/yyyy'}} - {{expense.value | number:'1.2-2'}} - {{expense.type.description}} - {{expense.notes}}
-        </ion-item>
+        <ion-item-sliding *ngFor="let expense of expenses | async">
+            <ion-item>
+                <ion-icon name="{{expense.type.icon}}" item-start></ion-icon>
+                <h2>{{expense.value | number:'1.2-2'}}</h2>
+                <h3>{{expense.type.description}}</h3>
+                <p>{{expense.notes}}</p>
+            </ion-item>
+            <ion-item-options side="right">
+                <button ion-button icon-only color="primary" (click)="updateExpense(expense.$key, expense.date, expense.value, expense.type, expense.notes)">
+                    <ion-icon name="create"></ion-icon>
+                </button>
+                <button ion-button icon-only color="danger" (click)="confirmDelete(expense.$key)">
+                    <ion-icon name="trash"></ion-icon>
+                </button>
+            </ion-item-options>
+        </ion-item-sliding>
     </ion-list>
 </ion-content>

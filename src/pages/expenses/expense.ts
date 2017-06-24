@@ -22,7 +22,11 @@ export class Expense {
         db: AngularFireDatabase) {
         this.date = this.params.get('date');
         this.value = this.params.get('value');
-        this.types = db.list('/types');
+        this.types = db.list('/types', {
+            query: {
+                orderByChild: 'code'
+            }
+        });
         this.notes = this.params.get('notes');
         
         // the following because [compareWith] doesn't work in the select component

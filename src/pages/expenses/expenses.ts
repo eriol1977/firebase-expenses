@@ -8,6 +8,7 @@ import {Expense} from './expense';
     templateUrl: 'expenses.html'
 })
 export class ExpensesPage {
+    db: AngularFireDatabase;
     expenses: FirebaseListObservable<any>;
     date: string;
 
@@ -16,12 +17,27 @@ export class ExpensesPage {
         public actionSheetCtrl: ActionSheetController,
         public modalCtrl: ModalController,
         db: AngularFireDatabase) {
+            this.db = db;
             this.date = new Date().toISOString();
-            this.expenses = db.list('/expenses');
+            this.expenses = this.db.list('/expenses', {
+                query: {
+                    orderByChild: 'date',
+                    equalTo: this.date.substring(0, 10)
+                }
+            });
+    }
+
+    onDateChanged(): void {
+        this.expenses = this.db.list('/expenses', {
+            query: {
+                orderByChild: 'date',
+                equalTo: this.date.substring(0, 10)
+            }
+        });
     }
 
     addExpense(): void {
-        let modal = this.modalCtrl.create(Expense, {date: this.date.substring(0, 10)},{enableBackdropDismiss: false});
+        let modal = this.modalCtrl.create(Expense, {date: this.date.substring(0, 10)}, {enableBackdropDismiss: false});
         modal.onDidDismiss(data => {
             if (data.save) {
                 this.expenses.push({
@@ -35,43 +51,40 @@ export class ExpensesPage {
         modal.present();
     }
 
-    showOptions(id: string, date: string, value: string, type: any, notes: string) {
-        let actionSheet = this.actionSheetCtrl.create({
+    confirmDelete(id: string) {
+        let alert = this.alertCtrl.create({
+            title: 'Conferma eliminazione',
+            message: 'Sei sicuro di voler eliminare la Spesa?',
             buttons: [
                 {
-                    text: 'Elimina',
-                    role: 'destructive',
-                    handler: () => {
-                        this.removeExpense(id);
-                    }
-                }, {
-                    text: 'Modifica',
-                    handler: () => {
-                        this.updateExpense(id, date, value, type, notes);
-                    }
-                }, {
                     text: 'Annulla',
                     role: 'cancel',
                     handler: () => {}
+                },
+                {
+                    text: 'Conferma',
+                    handler: () => {
+                        this.deleteExpense(id);
+                    }
                 }
             ]
         });
-        actionSheet.present();
+        alert.present();
     }
 
-    removeExpense(id: string) {
+    deleteExpense(id: string) {
         this.expenses.remove(id);
     }
 
     updateExpense(id: string, date: string, value: string, type: any, notes: string): void {
-        let modal = this.modalCtrl.create(Expense, {date: date, value: parseFloat(value).toFixed(2), typeCode: type.code, notes: notes},{enableBackdropDismiss: false});
+        let modal = this.modalCtrl.create(Expense, {date: date, value: parseFloat(value).toFixed(2), typeCode: type.code, notes: notes}, {enableBackdropDismiss: false});
         modal.onDidDismiss(data => {
             if (data.save) {
                 this.expenses.update(id, {
                     date: data.date,
                     value: data.value,
                     type: data.type,
-                    notes: data.notes
+                    notes: (data.notes != null ? data.notes : "")
                 });
             }
         });

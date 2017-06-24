@@ -1,22 +1,26 @@
-import { Component } from '@angular/core';
-import { NavController, AlertController, ActionSheetController } from 'ionic-angular';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import {Component} from '@angular/core';
+import {NavController, AlertController, ActionSheetController} from 'ionic-angular';
+import {AngularFireDatabase, FirebaseListObservable} from 'angularfire2/database';
 
 @Component({
-  selector: 'page-types',
-  templateUrl: 'types.html'
+    selector: 'page-types',
+    templateUrl: 'types.html'
 })
 export class TypesPage {
 
     types: FirebaseListObservable<any>;
 
-    constructor(public navCtrl: NavController, 
-                public alertCtrl: AlertController, 
-                public actionSheetCtrl: ActionSheetController,
-                db: AngularFireDatabase) {
-        this.types = db.list('/types');
+    constructor(public navCtrl: NavController,
+        public alertCtrl: AlertController,
+        public actionSheetCtrl: ActionSheetController,
+        db: AngularFireDatabase) {
+        this.types = db.list('/types', {
+            query: {
+                orderByChild: 'code'
+            }
+        });
     }
-  
+
     addType(): void {
         let prompt = this.alertCtrl.create({
             title: 'Tipo di Spesa',
@@ -28,6 +32,14 @@ export class TypesPage {
                 {
                     name: 'description',
                     placeholder: 'Descrizione'
+                },
+                {
+                    name: 'icon',
+                    placeholder: 'Icona'
+                },
+                {
+                    name: 'notes',
+                    placeholder: 'Note'
                 }
             ],
             buttons: [
@@ -40,7 +52,9 @@ export class TypesPage {
                     handler: data => {
                         this.types.push({
                             code: data.code,
-                            description: data.description
+                            description: data.description,
+                            icon: data.icon,
+                            notes: data.notes
                         });
                     }
                 }
@@ -49,35 +63,32 @@ export class TypesPage {
         prompt.present();
     }
 
-    showOptions(id: string, code: string, description: string) {
-        let actionSheet = this.actionSheetCtrl.create({
+    deleteType(id: string) {
+        this.types.remove(id);
+    }
+
+    confirmDelete(id: string, type: any) {
+        let alert = this.alertCtrl.create({
+            title: 'Conferma eliminazione',
+            message: 'Sei sicuro di voler eliminare il Tipo di Spesa ' + type.code + '?',
             buttons: [
                 {
-                    text: 'Elimina',
-                    role: 'destructive',
-                    handler: () => {
-                        this.removeType(id);
-                    }
-                },{
-                    text: 'Modifica',
-                    handler: () => {
-                        this.updateType(id, code, description);
-                    }
-                },{
                     text: 'Annulla',
                     role: 'cancel',
                     handler: () => {}
+                },
+                {
+                    text: 'Conferma',
+                    handler: () => {
+                        this.deleteType(id);
+                    }
                 }
             ]
         });
-        actionSheet.present();
+        alert.present();
     }
-    
-    removeType(id: string){
-        this.types.remove(id);
-    }
-    
-    updateType(id: string, code: string, description: string): void {
+
+    updateType(id: string, code: string, description: string, icon: string, notes: string): void {
         let prompt = this.alertCtrl.create({
             title: 'Tipo di Spesa',
             inputs: [
@@ -90,6 +101,16 @@ export class TypesPage {
                     name: 'description',
                     placeholder: 'Descrizione',
                     value: description
+                },
+                {
+                    name: 'notes',
+                    placeholder: 'Note',
+                    value: notes
+                },
+                {
+                    name: 'icon',
+                    placeholder: 'Icona',
+                    value: icon
                 }
             ],
             buttons: [
@@ -102,7 +123,9 @@ export class TypesPage {
                     handler: data => {
                         this.types.update(id, {
                             code: data.code,
-                            description: data.description
+                            description: data.description,
+                            icon: data.icon,
+                            notes: data.notes
                         });
                     }
                 }
