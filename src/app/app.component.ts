@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TypesPage } from '../pages/types/types';
+import { ExpensesPage } from '../pages/expenses/expenses';
 
 @Component({
   templateUrl: 'app.html'
@@ -11,7 +12,7 @@ import { TypesPage } from '../pages/types/types';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = TypesPage;
+  rootPage: any = ExpensesPage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -20,7 +21,8 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Tipi di Spesa', component: TypesPage }
+        { title: 'Spese', component: ExpensesPage },
+        { title: 'Tipi di Spesa', component: TypesPage }
     ];
 
   }

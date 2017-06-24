@@ -5,10 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { MyApp } from './app.component';
 import { TypesPage } from '../pages/types/types';
-import { AddTypePage} from '../pages/types/add-type'
-import { UpdateTypePage} from '../pages/types/update-type'
-
-import { ExpenseTypesService }     from '../pages/types/expense-types.service';
+import { ExpensesPage } from '../pages/expenses/expenses';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -32,8 +29,7 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     TypesPage,
-    AddTypePage,
-    UpdateTypePage
+    ExpensesPage
   ],
   imports: [
     BrowserModule,
@@ -46,14 +42,12 @@ export const firebaseConfig = {
   entryComponents: [
     MyApp,
     TypesPage,
-    AddTypePage,
-    UpdateTypePage
+    ExpensesPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ExpenseTypesService
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {}

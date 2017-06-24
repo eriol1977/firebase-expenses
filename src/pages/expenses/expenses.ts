@@ -3,31 +3,34 @@ import { NavController, AlertController, ActionSheetController } from 'ionic-ang
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 @Component({
-  selector: 'page-types',
-  templateUrl: 'types.html'
+  selector: 'page-expenses',
+  templateUrl: 'expenses.html'
 })
-export class TypesPage {
-
-    types: FirebaseListObservable<any>;
+export class ExpensesPage {
+    expenses: FirebaseListObservable<any>;
+    date: string;
 
     constructor(public navCtrl: NavController, 
                 public alertCtrl: AlertController, 
                 public actionSheetCtrl: ActionSheetController,
                 db: AngularFireDatabase) {
-        this.types = db.list('/types');
+        this.date = new Date().toISOString();
+        this.expenses = db.list('/expenses');
     }
-  
-    addType(): void {
+    
+    addExpense(): void {
         let prompt = this.alertCtrl.create({
-            title: 'Tipo di Spesa',
+            title: 'Spesa',
             inputs: [
                 {
-                    name: 'code',
-                    placeholder: 'Codice'
+                    name: 'date',
+                    placeholder: 'gg/mm/aaaa',
+                    type: 'date' 
                 },
                 {
-                    name: 'description',
-                    placeholder: 'Descrizione'
+                    name: 'value',
+                    placeholder: '999.99',
+                    type: 'number' 
                 }
             ],
             buttons: [
@@ -38,9 +41,9 @@ export class TypesPage {
                 {
                     text: 'Salva',
                     handler: data => {
-                        this.types.push({
-                            code: data.code,
-                            description: data.description
+                        this.expenses.push({
+                            date: data.date,
+                            value: data.value
                         });
                     }
                 }
@@ -48,20 +51,20 @@ export class TypesPage {
         });
         prompt.present();
     }
-
-    showOptions(id: string, code: string, description: string) {
+    
+    showOptions(id: string, value: string) {
         let actionSheet = this.actionSheetCtrl.create({
             buttons: [
                 {
                     text: 'Elimina',
                     role: 'destructive',
                     handler: () => {
-                        this.removeType(id);
+                        this.removeExpense(id);
                     }
                 },{
                     text: 'Modifica',
                     handler: () => {
-                        this.updateType(id, code, description);
+                        this.updateExpense(id, value);
                     }
                 },{
                     text: 'Annulla',
@@ -73,23 +76,19 @@ export class TypesPage {
         actionSheet.present();
     }
     
-    removeType(id: string){
-        this.types.remove(id);
+    removeExpense(id: string){
+        this.expenses.remove(id);
     }
     
-    updateType(id: string, code: string, description: string): void {
+    updateExpense(id: string, value: string): void {
         let prompt = this.alertCtrl.create({
-            title: 'Tipo di Spesa',
+            title: 'Spesa',
             inputs: [
                 {
-                    name: 'code',
-                    placeholder: 'Codice',
-                    value: code
-                },
-                {
-                    name: 'description',
-                    placeholder: 'Descrizione',
-                    value: description
+                    name: 'value',
+                    placeholder: 'Valore',
+                    type: 'number',
+                    value: parseFloat(value).toFixed(2)
                 }
             ],
             buttons: [
@@ -100,9 +99,8 @@ export class TypesPage {
                 {
                     text: 'Salva',
                     handler: data => {
-                        this.types.update(id, {
-                            code: data.code,
-                            description: data.description
+                        this.expenses.update(id, {
+                            value: data.value
                         });
                     }
                 }
