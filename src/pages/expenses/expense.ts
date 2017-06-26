@@ -43,13 +43,13 @@ export class Expense {
     private validateExpense() : boolean {
         var result = true;
         if (!this.date) {
-            this.alertMessage('Inserire una data');
+            this.alertMessage('Inserisci una data');
             result = false;
         }else if (!this.value) {
-            this.alertMessage('Inserire un valore');
+            this.alertMessage('Inserisci un valore');
             result = false;
         }else if (!this.typeCode) {
-            this.alertMessage('Inserire un tipo di spesa');
+            this.alertMessage('Inserisci un tipo di spesa');
             result = false;
         }
         return result;

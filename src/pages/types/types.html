@@ -8,12 +8,13 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-list>
-        <ion-item *ngFor="let type of types">
-            <ion-icon name="{{type.icon}}" item-start></ion-icon>
-            <h2>{{type.description}}</h2>
-            <h3>{{type.code}}</h3>
-            <p>{{type.notes}}</p>
-        </ion-item>
-    </ion-list>
+    <ion-card *ngFor="let type of types">
+        <ion-card-content>
+            <ion-card-title>
+                <ion-icon name="{{type.icon}}" item-start></ion-icon>
+                {{type.description}}
+            </ion-card-title>
+            {{type.notes}}
+        </ion-card-content>
+    </ion-card>
 </ion-content>

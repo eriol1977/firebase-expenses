@@ -22,6 +22,15 @@
         <ion-label stacked>Note</ion-label>
         <ion-textarea [(ngModel)]="notes"></ion-textarea>
     </ion-item>
-    <button ion-button (click)="dismiss(true)">Salva</button>
-    <button ion-button (click)="dismiss(false)">Annulla</button>
+    <br/>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <button ion-button block (click)="dismiss(true)">Salva</button>
+            </ion-col>
+            <ion-col>
+                <button ion-button block color="light" (click)="dismiss(false)">Annulla</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
