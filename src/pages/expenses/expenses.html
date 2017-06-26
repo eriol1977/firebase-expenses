@@ -1,22 +1,19 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Spese</ion-title>
-    <ion-buttons end>
-        <button ion-button icon-only (click)="addExpense()">
-            <ion-icon name="add"></ion-icon>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
         </button>
-    </ion-buttons>
-  </ion-navbar>
+        <ion-title>Spese</ion-title>
+    </ion-navbar>
+    <ion-toolbar color="primary">
+        <ion-item color="primary">
+            <ion-label color="light">Data</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="date" (ionChange)="onDateChanged()"></ion-datetime>
+        </ion-item>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-    <ion-item>
-        <ion-label>Data</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="date" (ionChange)="onDateChanged()"></ion-datetime>
-    </ion-item>
     <ion-list>
         <ion-item-sliding *ngFor="let expense of expenses | async">
             <ion-item>
@@ -27,7 +24,7 @@
             </ion-item>
             <ion-item-options side="right">
                 <button ion-button icon-only color="primary" (click)="updateExpense(expense.$key, expense.date, expense.value, expense.type, expense.notes)">
-                    <ion-icon name="create"></ion-icon>
+                        <ion-icon name="create"></ion-icon>
                 </button>
                 <button ion-button icon-only color="danger" (click)="confirmDelete(expense.$key)">
                     <ion-icon name="trash"></ion-icon>
@@ -35,4 +32,8 @@
             </ion-item-options>
         </ion-item-sliding>
     </ion-list>
+
+    <ion-fab right bottom>
+        <button ion-fab mini (click)="addExpense()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
 </ion-content>
