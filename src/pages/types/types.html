@@ -4,31 +4,16 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>Tipi di Spesa</ion-title>
-        <ion-buttons end>
-            <button ion-button icon-only (click)="addType()">
-                    <ion-icon name="add"></ion-icon>
-            </button>
-        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
     <ion-list>
-        <ion-item-sliding *ngFor="let type of types | async">
-            <ion-item>
-                <ion-icon name="{{type.icon}}" item-start></ion-icon>
-                <h2>{{type.description}}</h2>
-                <h3>{{type.code}}</h3>
-                <p>{{type.notes}}</p>
-            </ion-item>
-            <ion-item-options side="right">
-                <button ion-button icon-only color="primary" (click)="updateType(type.$key, type.code, type.description, type.icon, type.notes)">
-                    <ion-icon name="create"></ion-icon>
-                </button>
-                <button ion-button icon-only color="danger" (click)="confirmDelete(type.$key, type)">
-                    <ion-icon name="trash"></ion-icon>
-                </button>
-            </ion-item-options>
-        </ion-item-sliding>
+        <ion-item *ngFor="let type of types">
+            <ion-icon name="{{type.icon}}" item-start></ion-icon>
+            <h2>{{type.description}}</h2>
+            <h3>{{type.code}}</h3>
+            <p>{{type.notes}}</p>
+        </ion-item>
     </ion-list>
 </ion-content>

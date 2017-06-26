@@ -4,7 +4,6 @@ import {AngularFireDatabase, FirebaseListObservable} from 'angularfire2/database
 import {Expense} from './expense';
 
 @Component({
-    selector: 'page-expenses',
     templateUrl: 'expenses.html'
 })
 export class ExpensesPage {
@@ -44,7 +43,7 @@ export class ExpensesPage {
                     date: data.date,
                     value: data.value,
                     type: data.type,
-                    notes: data.notes
+                    notes: (data.notes != null ? data.notes : "")
                 });
             }
         });

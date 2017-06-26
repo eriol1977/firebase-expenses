@@ -10,7 +10,7 @@
     <ion-item>
         <ion-label>Tipo</ion-label>
         <ion-select interface="popover" [(ngModel)]="typeCode">
-            <ion-option *ngFor="let t of types | async" [value]="t.code">{{t.description}}</ion-option>
+            <ion-option *ngFor="let t of types" [value]="t.code">{{t.description}}</ion-option>
         </ion-select>
     </ion-item>
     <ion-item>
