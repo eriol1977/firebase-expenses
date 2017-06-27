@@ -7,6 +7,7 @@ import { MyApp } from './app.component';
 import { TypesPage } from '../pages/types/types';
 import { ExpensesPage } from '../pages/expenses/expenses';
 import { Expense } from '../pages/expenses/expense';
+import { ResumePage } from '../pages/resume/resume';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -31,7 +32,8 @@ export const firebaseConfig = {
     MyApp,
     TypesPage,
     ExpensesPage,
-    Expense
+    Expense,
+    ResumePage
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,8 @@ export const firebaseConfig = {
     MyApp,
     TypesPage,
     ExpensesPage,
-    Expense
+    Expense,
+    ResumePage
   ],
   providers: [
     StatusBar,
