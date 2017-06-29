@@ -1,0 +1,40 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            <ion-icon name="{{type.icon}}"></ion-icon>
+            &nbsp;&nbsp;{{type.description}} - {{month}} {{year}}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <ion-item  *ngFor="let expense of expenses">
+            <ion-row>
+                <ion-col col-9>
+                    <h3>{{expense.date | date:"dd/MM/yy"}}</h3>
+                    <p>{{expense.notes}}</p>
+                </ion-col>
+                <ion-col col-3 text-right>
+                    <h2>{{expense.value | number:'1.2-2'}}</h2>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item *ngIf="total" color="secondary">
+            <ion-row>
+                <ion-col col-9>
+                    <h2>Totale:</h2>
+                </ion-col>
+                <ion-col col-3 text-right>
+                    <h2>{{total | number:'1.2-2'}}</h2>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item *ngIf="!total" color="danger" text-center>
+            Nessuna spesa del tipo selezionato
+        </ion-item>
+    </ion-list>
+</ion-content>

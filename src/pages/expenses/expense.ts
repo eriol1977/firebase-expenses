@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {NavParams, ViewController, ToastController} from 'ionic-angular';
 
 import {Type} from '../types/type';
@@ -17,6 +17,8 @@ export class Expense {
     // the following because [compareWith] doesn't work in the select component
     typeCode: string;
 
+    @ViewChild('inputToFocus') inputToFocus;
+
     constructor(public params: NavParams,
         public viewCtrl: ViewController,
         public toastCtrl: ToastController) {
@@ -28,8 +30,14 @@ export class Expense {
         this.typeCode = this.params.get('typeCode');
     }
 
+    ionViewDidLoad() {
+        setTimeout(() => {
+            this.inputToFocus.setFocus();
+        }, 150);
+    }
+
     dismiss(save: boolean) {
-        if(save && !this.validateExpense())
+        if (save && !this.validateExpense())
             return;
 
         // the following because [compareWith] doesn't work in the select component
@@ -40,15 +48,15 @@ export class Expense {
         this.viewCtrl.dismiss(data);
     }
 
-    private validateExpense() : boolean {
+    private validateExpense(): boolean {
         var result = true;
         if (!this.date) {
             this.alertMessage('Inserisci una data');
             result = false;
-        }else if (!this.value) {
+        } else if (!this.value) {
             this.alertMessage('Inserisci un valore');
             result = false;
-        }else if (!this.typeCode) {
+        } else if (!this.typeCode) {
             this.alertMessage('Inserisci un tipo di spesa');
             result = false;
         }

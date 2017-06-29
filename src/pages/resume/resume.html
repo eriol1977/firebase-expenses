@@ -15,15 +15,15 @@
 
 <ion-content padding>
     <ion-list>
-        <ion-item *ngFor="let type of types">
+        <button ion-item *ngFor="let type of types" (click)="showExpenses(type)">
             <ion-icon name="{{type.icon}}" item-start></ion-icon>
             <ion-label>{{type.description}}</ion-label>
-            <ion-label>{{getTotal(type.code) | number:'1.2-2'}}</ion-label>
-        </ion-item>
+            <ion-label text-right>{{getTotal(type.code) | number:'1.2-2'}}</ion-label>
+        </button>
         <ion-item color="secondary">
-            <ion-icon name="alert" item-start></ion-icon>
-            <ion-label>Totale</ion-label>
-            <ion-label>{{grandTotal | number:'1.2-2'}}</ion-label>
+            <ion-icon name="" item-start></ion-icon>
+            <ion-label><h2>Totale</h2></ion-label>
+            <ion-label text-right>{{grandTotal | number:'1.2-2'}}</ion-label>
         </ion-item>
     </ion-list>
 </ion-content>
