@@ -9,5 +9,8 @@ export const EXPENSE_TYPES: Type[] = [
     new Type("OGG","Oggetti e Strumenti","Oggetti e strumenti in generale, per la casa e non","home"),
     new Type("REG","Regali e offerte","Regali, offerte, donazioni...","heart"),
     new Type("SAL","Salute","Visite mediche e prodotti farmaceutici","pulse"),
-    new Type("TRS","Trasporti","Benzina, autostrada, riparazioni auto, biglietti treno e autobus...","car")
+    new Type("TRS","Trasporti","Benzina, autostrada, riparazioni auto, biglietti treno e autobus, assicurazione auto...","car"),
+    new Type("TAS","Imposte/Tasse","Imposte e tasse in generale, bollo auto...","nuclear"),
+    new Type("UTZ","Utenze","Luce, gas, telefono, internet, cellulare, condominio...","speedometer"),
+    new Type("SCU","Scuola","Iscrizioni, corsi...","school")
 ];
