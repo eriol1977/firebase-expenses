@@ -36,7 +36,7 @@ export class ExpensesPage {
     }
 
     addExpense(): void {
-        let modal = this.modalCtrl.create(Expense, {date: this.date.substring(0, 10)}, {enableBackdropDismiss: false});
+        let modal = this.modalCtrl.create(Expense, {date: this.date.substring(0, 10), extra: false}, {enableBackdropDismiss: false});
         modal.onDidDismiss(data => {
             if (data.save) {
                 this.expenses.push({
