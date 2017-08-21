@@ -16,10 +16,15 @@
             <ion-row>
                 <ion-col col-9>
                     <h3>{{expense.date | date:"dd/MM/yy"}}</h3>
-                    <p>{{expense.notes}}</p>
+                    <p>
+                        {{expense.notes}}
+                        <ion-icon name="alert" *ngIf="expense.extra" title="Spesa straordinaria"></ion-icon>
+                    </p>
                 </ion-col>
                 <ion-col col-3 text-right>
-                    <h2>{{expense.value | number:'1.2-2'}}</h2>
+                    <h2>
+                        {{expense.value | number:'1.2-2'}}
+                    </h2>
                 </ion-col>
             </ion-row>
         </ion-item>

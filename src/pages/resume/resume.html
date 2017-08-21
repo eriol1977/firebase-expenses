@@ -18,6 +18,7 @@
         <button ion-item *ngFor="let type of types" (click)="showExpenses(type)">
             <ion-icon name="{{type.icon}}" item-start></ion-icon>
             <ion-label>{{type.description}}</ion-label>
+            <ion-label *ngIf="hasExtra(type.code)">(con extra)</ion-label>
             <ion-label text-right>{{getTotal(type.code) | number:'1.2-2'}}</ion-label>
         </button>
         <ion-item color="secondary">

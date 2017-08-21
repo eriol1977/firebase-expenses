@@ -43,7 +43,8 @@ export class ExpensesPage {
                     date: data.date,
                     value: data.value,
                     type: data.type,
-                    notes: (data.notes != null ? data.notes : "")
+                    notes: (data.notes != null ? data.notes : ""),
+                    extra: data.extra
                 });
             }
         });
@@ -75,15 +76,16 @@ export class ExpensesPage {
         this.expenses.remove(id);
     }
 
-    updateExpense(id: string, date: string, value: string, type: any, notes: string): void {
-        let modal = this.modalCtrl.create(Expense, {date: date, value: parseFloat(value).toFixed(2), typeCode: type.code, notes: notes}, {enableBackdropDismiss: false});
+    updateExpense(id: string, date: string, value: string, type: any, notes: string, extra: boolean): void {
+        let modal = this.modalCtrl.create(Expense, {date: date, value: parseFloat(value).toFixed(2), typeCode: type.code, extra: extra, notes: notes}, {enableBackdropDismiss: false});
         modal.onDidDismiss(data => {
             if (data.save) {
                 this.expenses.update(id, {
                     date: data.date,
                     value: data.value,
                     type: data.type,
-                    notes: (data.notes != null ? data.notes : "")
+                    notes: (data.notes != null ? data.notes : ""),
+                    extra: data.extra
                 });
             }
         });

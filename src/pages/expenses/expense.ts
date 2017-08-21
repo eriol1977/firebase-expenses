@@ -13,6 +13,7 @@ export class Expense {
     value: string;
     types: Type[] = EXPENSE_TYPES;
     notes: string;
+    extra: boolean;
 
     // the following because [compareWith] doesn't work in the select component
     typeCode: string;
@@ -25,6 +26,7 @@ export class Expense {
         this.date = this.params.get('date');
         this.value = this.params.get('value');
         this.notes = this.params.get('notes');
+        this.extra = this.params.get('extra');
 
         // the following because [compareWith] doesn't work in the select component
         this.typeCode = this.params.get('typeCode');
@@ -44,7 +46,7 @@ export class Expense {
         var type: any;
         this.types.forEach(t => {if (t.code == this.typeCode) type = t;});
 
-        let data = {'save': save, 'date': this.date, 'value': this.value, 'type': type, 'notes': this.notes};
+        let data = {'save': save, 'date': this.date, 'value': this.value, 'type': type, 'notes': this.notes, 'extra': this.extra};
         this.viewCtrl.dismiss(data);
     }
 

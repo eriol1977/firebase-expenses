@@ -21,9 +21,10 @@
                 <h2>{{expense.value | number:'1.2-2'}}</h2>
                 <h3>{{expense.type.description}}</h3>
                 <p>{{expense.notes}}</p>
+                <ion-icon name="alert" *ngIf="expense.extra" title="Spesa straordinaria" item-end></ion-icon>
             </ion-item>
             <ion-item-options side="right">
-                <button ion-button icon-only color="primary" (click)="updateExpense(expense.$key, expense.date, expense.value, expense.type, expense.notes)">
+                <button ion-button icon-only color="primary" (click)="updateExpense(expense.$key, expense.date, expense.value, expense.type, expense.notes, expense.extra)">
                         <ion-icon name="create"></ion-icon>
                 </button>
                 <button ion-button icon-only color="danger" (click)="confirmDelete(expense.$key)">

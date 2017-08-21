@@ -17,6 +17,7 @@ export class ResumePage {
     totalsMap: Map<string, number> = new Map<string, number>();
     expensesByType: Map<string,any[]> = new Map<string,any[]>();
     grandTotal: number;
+    extras: Map<string, boolean> = new Map<string, boolean>();
 
     constructor(public navCtrl: NavController,
         db: AngularFireDatabase) {
@@ -34,6 +35,13 @@ export class ResumePage {
         if (!total)
             return 0;
         return total;
+    }
+
+    hasExtra(typeCode: string): boolean {
+        let result = this.extras.get(typeCode);
+        if (!result)
+            return false;
+        return result;
     }
 
     private calculateTotals(): void {
@@ -63,6 +71,11 @@ export class ResumePage {
                 this.expensesByType.set(typeCode,exp);
             }
             exp.push(expense);
+
+            // extraordinary expenses check
+            if(expense.extra) {
+                this.extras.set(typeCode,true);
+            }
         }
     }
 
