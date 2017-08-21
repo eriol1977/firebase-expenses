@@ -1,11 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TypesPage } from '../pages/types/types';
 import { ExpensesPage } from '../pages/expenses/expenses';
 import { ResumePage } from '../pages/resume/resume';
+
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   templateUrl: 'app.html'
@@ -17,7 +19,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private afAuth: AngularFireAuth, private toastCtrl: ToastController) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -35,6 +37,30 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      this.login();
+    });
+  }
+
+  // Anonymous login to firebase.
+  // In Firebase Console, the database access rules have been set as:
+  // "rules": {
+  //  ".read": "auth != null",
+  //  ".write": "auth != null"
+  // }
+  // and the Anonymous authentication method has been enabled in the Authentication console
+  login() {
+    this.afAuth.auth.signInAnonymously()
+    .then(auth => {
+      // Do custom things with auth
+    })
+    .catch(err => {
+      // Handle error
+      let toast = this.toastCtrl.create({
+        message: err.message,
+        duration: 1000
+      });
+      toast.present();
     });
   }
 

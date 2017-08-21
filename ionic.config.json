@@ -1,5 +1,6 @@
 {
   "name": "ionic-expenses",
   "app_id": "46fb8140",
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "integrations": {}
 }
