@@ -1,11 +1,19 @@
 {
-  "name": "Ionic",
-  "short_name": "Ionic",
+  "name": "Gestione Spese",
+  "short_name": "Spese",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{
-    "src": "assets/imgs/logo.png",
-    "sizes": "512x512",
+    "src": "assets/img/logo-400.png",
+    "sizes": "400x400",
+    "type": "image/png"
+  },{
+    "src": "assets/img/logo-256.png",
+    "sizes": "256x256",
+    "type": "image/png"
+  },{
+    "src": "assets/img/logo-128.png",
+    "sizes": "128x128",
     "type": "image/png"
   }],
   "background_color": "#4e8ef7",
