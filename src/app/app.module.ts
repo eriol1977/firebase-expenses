@@ -10,6 +10,8 @@ import { Expense } from '../pages/expenses/expense';
 import { ResumePage } from '../pages/resume/resume';
 import { ResumeExpensesPage } from '../pages/resume/resume-expenses';
 import { IncomeTypesPage } from '../pages/income-types/income-types';
+import { IncomesPage } from '../pages/incomes/incomes';
+import { Income } from '../pages/incomes/income';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -39,6 +41,8 @@ export const firebaseConfig = {
     ResumePage,
     ResumeExpensesPage,
     IncomeTypesPage,
+    Income,
+    IncomesPage
   ],
   imports: [
     BrowserModule,
@@ -57,6 +61,8 @@ export const firebaseConfig = {
     ResumePage,
     ResumeExpensesPage,
     IncomeTypesPage,
+    Income,
+    IncomesPage
   ],
   providers: [
     StatusBar,

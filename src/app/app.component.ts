@@ -7,6 +7,7 @@ import { TypesPage } from '../pages/types/types';
 import { ExpensesPage } from '../pages/expenses/expenses';
 import { ResumePage } from '../pages/resume/resume';
 import { IncomeTypesPage } from '../pages/income-types/income-types';
+import { IncomesPage } from '../pages/incomes/incomes';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -26,7 +27,8 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
         { title: 'Spese', component: ExpensesPage },
-        { title: 'Riassunto', component: ResumePage },
+        { title: 'Entrate', component: IncomesPage },
+        { title: 'Riassunto Spese', component: ResumePage },
         { title: 'Tipi di Spesa', component: TypesPage },
         { title: 'Tipi di Entrate', component: IncomeTypesPage }
     ];
