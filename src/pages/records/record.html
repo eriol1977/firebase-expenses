@@ -1,6 +1,7 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>Inserisci Spesa</ion-title>
+        <ion-title *ngIf="kind=='E'">Inserisci Spesa</ion-title>
+        <ion-title *ngIf="kind=='I'">Inserisci Entrata</ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content padding>

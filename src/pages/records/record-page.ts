@@ -1,17 +1,18 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavParams, ViewController, ToastController} from 'ionic-angular';
 
-import {IncomeType} from '../income-types/income-type';
-import {INCOME_TYPES} from '../income-types/income-types-provider';
+import {Type} from '../record-types/type';
+import {EXPENSE_TYPES, INCOME_TYPES} from '../record-types/types-provider';
 
 @Component({
-    templateUrl: 'income.html'
+    templateUrl: 'record.html'
 })
-export class Income {
+export class RecordPage {
 
+    kind: string; // E = Expense, I = Income
     date: string;
     value: string;
-    types: IncomeType[] = INCOME_TYPES;
+    types: Type[];
     notes: string;
     extra: boolean;
 
@@ -23,13 +24,25 @@ export class Income {
     constructor(public params: NavParams,
         public viewCtrl: ViewController,
         public toastCtrl: ToastController) {
-        this.date = this.params.get('date');
-        this.value = this.params.get('value');
-        this.notes = this.params.get('notes');
-        this.extra = this.params.get('extra');
 
-        // the following because [compareWith] doesn't work in the select component
-        this.typeCode = this.params.get('typeCode');
+            if(this.params.get('kind')) {
+                this.kind = this.params.get('kind');
+                if(this.kind == "E")
+                    this.types = EXPENSE_TYPES;
+                else
+                    this.types = INCOME_TYPES;
+            }else{
+                this.kind = 'E';
+                this.types = EXPENSE_TYPES;
+            }
+
+            this.date = this.params.get('date');
+            this.value = this.params.get('value');
+            this.notes = this.params.get('notes');
+            this.extra = this.params.get('extra');
+
+            // the following because [compareWith] doesn't work in the select component
+            this.typeCode = this.params.get('typeCode');
     }
 
     ionViewDidLoad() {
@@ -39,7 +52,7 @@ export class Income {
     }
 
     dismiss(save: boolean) {
-        if (save && !this.validateIncome())
+        if (save && !this.validateRecord())
             return;
 
         // the following because [compareWith] doesn't work in the select component
@@ -50,7 +63,7 @@ export class Income {
         this.viewCtrl.dismiss(data);
     }
 
-    private validateIncome(): boolean {
+    private validateRecord(): boolean {
         var result = true;
         if (!this.date) {
             this.alertMessage('Inserisci una data');
@@ -59,7 +72,7 @@ export class Income {
             this.alertMessage('Inserisci un valore');
             result = false;
         } else if (!this.typeCode) {
-            this.alertMessage('Inserisci un tipo di entrata');
+            this.alertMessage('Inserisci un tipo');
             result = false;
         }
         return result;

@@ -3,7 +3,8 @@
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Entrate</ion-title>
+        <ion-title *ngIf="kind=='E'">Spese</ion-title>
+        <ion-title *ngIf="kind=='I'">Entrate</ion-title>
     </ion-navbar>
     <ion-toolbar color="primary">
         <ion-item color="primary">
@@ -15,19 +16,19 @@
 
 <ion-content padding>
     <ion-list>
-        <ion-item-sliding *ngFor="let income of incomes | async">
+        <ion-item-sliding *ngFor="let record of records | async">
             <ion-item>
-                <ion-icon name="{{income.type.icon}}" item-start></ion-icon>
-                <h2>{{income.value | number:'1.2-2'}}</h2>
-                <h3>{{income.type.description}}</h3>
-                <p>{{income.notes}}</p>
-                <ion-icon name="alert" *ngIf="income.extra" title="Entrata straordinaria" item-end></ion-icon>
+                <ion-icon name="{{record.type.icon}}" item-start></ion-icon>
+                <h2>{{record.value | number:'1.2-2'}}</h2>
+                <h3>{{record.type.description}}</h3>
+                <p>{{record.notes}}</p>
+                <ion-icon name="alert" *ngIf="record.extra" title="Straordinaria" item-end></ion-icon>
             </ion-item>
             <ion-item-options side="right">
-                <button ion-button icon-only color="primary" (click)="updateIncome(income.$key, income.date, income.value, income.type, income.notes, income.extra)">
+                <button ion-button icon-only color="primary" (click)="updateRecord(record.$key, record.date, record.value, record.type, record.notes, record.extra)">
                         <ion-icon name="create"></ion-icon>
                 </button>
-                <button ion-button icon-only color="danger" (click)="confirmDelete(income.$key)">
+                <button ion-button icon-only color="danger" (click)="confirmDelete(record.$key)">
                     <ion-icon name="trash"></ion-icon>
                 </button>
             </ion-item-options>
@@ -35,6 +36,6 @@
     </ion-list>
 
     <ion-fab right bottom>
-        <button ion-fab (click)="addIncome()"><ion-icon name="add"></ion-icon></button>
+        <button ion-fab (click)="addRecord()"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
 </ion-content>

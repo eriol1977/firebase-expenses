@@ -3,7 +3,8 @@
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Riassunto Spese</ion-title>
+        <ion-title *ngIf="kind=='E'">Riassunto Spese</ion-title>
+        <ion-title *ngIf="kind=='I'">Riassunto Entrate</ion-title>
     </ion-navbar>
     <ion-toolbar color="primary">
         <ion-item color="primary">
@@ -15,7 +16,7 @@
 
 <ion-content padding>
     <ion-list>
-        <button ion-item *ngFor="let type of types" (click)="showExpenses(type)">
+        <button ion-item *ngFor="let type of types" (click)="showRecords(type)">
             <ion-icon name="{{type.icon}}" item-start></ion-icon>
             <ion-label>{{type.description}}</ion-label>
             <ion-label *ngIf="hasExtra(type.code)">(con extra)</ion-label>

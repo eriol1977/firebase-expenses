@@ -3,11 +3,9 @@ import { Nav, Platform, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { TypesPage } from '../pages/types/types';
-import { ExpensesPage } from '../pages/expenses/expenses';
-import { ResumePage } from '../pages/resume/resume';
-import { IncomeTypesPage } from '../pages/income-types/income-types';
-import { IncomesPage } from '../pages/incomes/incomes';
+import { TypesPage } from '../pages/record-types/types-page';
+import { RecordListPage } from '../pages/records/record-list-page';
+import { ResumePage } from '../pages/resumes/resume-page';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -17,20 +15,21 @@ import { AngularFireAuth } from 'angularfire2/auth';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = ExpensesPage;
+  rootPage: any = RecordListPage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title: string, component: any, params: object}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private afAuth: AngularFireAuth, private toastCtrl: ToastController) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-        { title: 'Spese', component: ExpensesPage },
-        { title: 'Entrate', component: IncomesPage },
-        { title: 'Riassunto Spese', component: ResumePage },
-        { title: 'Tipi di Spesa', component: TypesPage },
-        { title: 'Tipi di Entrate', component: IncomeTypesPage }
+        { title: 'Spese', component: RecordListPage, params: {kind: 'E'} },
+        { title: 'Entrate', component: RecordListPage, params: {kind: 'I'} },
+        { title: 'Riassunto Spese', component: ResumePage, params: {kind: 'E'} },
+        { title: 'Riassunto Entrate', component: ResumePage, params: {kind: 'I'} },
+        { title: 'Tipi di Spesa', component: TypesPage, params: {kind: 'E'} },
+        { title: 'Tipi di Entrate', component: TypesPage, params: {kind: 'I'} }
     ];
 
   }
@@ -71,6 +70,6 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    this.nav.setRoot(page.component, page.params);
   }
 }

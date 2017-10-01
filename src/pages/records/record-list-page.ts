@@ -1,24 +1,37 @@
 import {Component} from '@angular/core';
-import {NavController, AlertController, ActionSheetController, ModalController} from 'ionic-angular';
+import {NavParams, NavController, AlertController, ActionSheetController, ModalController} from 'ionic-angular';
 import {AngularFireDatabase, FirebaseListObservable} from 'angularfire2/database';
-import {Income} from './income';
+import {RecordPage} from './record-page';
 
 @Component({
-    templateUrl: 'incomes.html'
+    templateUrl: 'record-list.html'
 })
-export class IncomesPage {
+export class RecordListPage {
     db: AngularFireDatabase;
-    incomes: FirebaseListObservable<any>;
+    records: FirebaseListObservable<any>;
     date: string;
+    kind: string; // E = Expense, I = Income
+    tableName : string;
 
     constructor(public navCtrl: NavController,
+        public params: NavParams,
         public alertCtrl: AlertController,
         public actionSheetCtrl: ActionSheetController,
         public modalCtrl: ModalController,
         db: AngularFireDatabase) {
             this.db = db;
             this.date = new Date().toISOString();
-            this.incomes = this.db.list('/incomes', {
+            if(this.params.get('kind')) {
+                this.kind = this.params.get('kind');
+                if(this.kind == "E")
+                    this.tableName = "/expenses";
+                else
+                    this.tableName = "/incomes";
+            }else{
+                this.kind = 'E';
+                this.tableName = "/expenses";
+            }
+            this.records = this.db.list(this.tableName, {
                 query: {
                     orderByChild: 'date',
                     equalTo: this.date.substring(0, 10)
@@ -27,7 +40,7 @@ export class IncomesPage {
     }
 
     onDateChanged(): void {
-        this.incomes = this.db.list('/incomes', {
+        this.records = this.db.list(this.tableName, {
             query: {
                 orderByChild: 'date',
                 equalTo: this.date.substring(0, 10)
@@ -35,11 +48,11 @@ export class IncomesPage {
         });
     }
 
-    addIncome(): void {
-        let modal = this.modalCtrl.create(Income, {date: this.date.substring(0, 10), extra: false}, {enableBackdropDismiss: false});
+    addRecord(): void {
+        let modal = this.modalCtrl.create(RecordPage, {kind: this.kind, date: this.date.substring(0, 10), extra: false}, {enableBackdropDismiss: false});
         modal.onDidDismiss(data => {
             if (data.save) {
-                this.incomes.push({
+                this.records.push({
                     date: data.date,
                     value: data.value,
                     type: data.type,
@@ -54,7 +67,7 @@ export class IncomesPage {
     confirmDelete(id: string) {
         let alert = this.alertCtrl.create({
             title: 'Conferma eliminazione',
-            message: 'Sei sicuro di voler eliminare l\'entrata?',
+            message: "Sei sicuro di voler eliminare l'elemento?",
             buttons: [
                 {
                     text: 'Annulla',
@@ -64,7 +77,7 @@ export class IncomesPage {
                 {
                     text: 'Conferma',
                     handler: () => {
-                        this.deleteIncome(id);
+                        this.deleteRecord(id);
                     }
                 }
             ]
@@ -72,15 +85,15 @@ export class IncomesPage {
         alert.present();
     }
 
-    deleteIncome(id: string) {
-        this.incomes.remove(id);
+    deleteRecord(id: string) {
+        this.records.remove(id);
     }
 
-    updateIncome(id: string, date: string, value: string, type: any, notes: string, extra: boolean): void {
-        let modal = this.modalCtrl.create(Income, {date: date, value: parseFloat(value).toFixed(2), typeCode: type.code, extra: extra, notes: notes}, {enableBackdropDismiss: false});
+    updateRecord(id: string, date: string, value: string, type: any, notes: string, extra: boolean): void {
+        let modal = this.modalCtrl.create(RecordPage, {kind: this.kind, date: date, value: parseFloat(value).toFixed(2), typeCode: type.code, extra: extra, notes: notes}, {enableBackdropDismiss: false});
         modal.onDidDismiss(data => {
             if (data.save) {
-                this.incomes.update(id, {
+                this.records.update(id, {
                     date: data.date,
                     value: data.value,
                     type: data.type,

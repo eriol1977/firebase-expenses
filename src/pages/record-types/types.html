@@ -3,7 +3,8 @@
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Tipi di Spesa</ion-title>
+        <ion-title *ngIf="kind=='E'">Tipi di Spese</ion-title>
+        <ion-title *ngIf="kind=='I'">Tipi di Entrate</ion-title>
     </ion-navbar>
 </ion-header>
 

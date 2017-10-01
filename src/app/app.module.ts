@@ -4,14 +4,11 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
 
 import { MyApp } from './app.component';
-import { TypesPage } from '../pages/types/types';
-import { ExpensesPage } from '../pages/expenses/expenses';
-import { Expense } from '../pages/expenses/expense';
-import { ResumePage } from '../pages/resume/resume';
-import { ResumeExpensesPage } from '../pages/resume/resume-expenses';
-import { IncomeTypesPage } from '../pages/income-types/income-types';
-import { IncomesPage } from '../pages/incomes/incomes';
-import { Income } from '../pages/incomes/income';
+import { TypesPage } from '../pages/record-types/types-page';
+import { RecordListPage } from '../pages/records/record-list-page';
+import { RecordPage } from '../pages/records/record-page';
+import { ResumePage } from '../pages/resumes/resume-page';
+import { ResumeListPage } from '../pages/resumes/resume-list-page';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -36,13 +33,10 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     TypesPage,
-    ExpensesPage,
-    Expense,
+    RecordListPage,
+    RecordPage,
     ResumePage,
-    ResumeExpensesPage,
-    IncomeTypesPage,
-    Income,
-    IncomesPage
+    ResumeListPage
   ],
   imports: [
     BrowserModule,
@@ -56,13 +50,10 @@ export const firebaseConfig = {
   entryComponents: [
     MyApp,
     TypesPage,
-    ExpensesPage,
-    Expense,
+    RecordListPage,
+    RecordPage,
     ResumePage,
-    ResumeExpensesPage,
-    IncomeTypesPage,
-    Income,
-    IncomesPage
+    ResumeListPage
   ],
   providers: [
     StatusBar,

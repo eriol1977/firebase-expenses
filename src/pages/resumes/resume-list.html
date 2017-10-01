@@ -12,18 +12,18 @@
 
 <ion-content padding>
     <ion-list>
-        <ion-item  *ngFor="let expense of expenses">
+        <ion-item  *ngFor="let record of records">
             <ion-row>
                 <ion-col col-9>
-                    <h3>{{expense.date | date:"dd/MM/yy"}}</h3>
+                    <h3>{{record.date | date:"dd/MM/yy"}}</h3>
                     <p>
-                        {{expense.notes}}
-                        <ion-icon name="alert" *ngIf="expense.extra" title="Spesa straordinaria"></ion-icon>
+                        {{record.notes}}
+                        <ion-icon name="alert" *ngIf="record.extra" title="Straordinaria"></ion-icon>
                     </p>
                 </ion-col>
                 <ion-col col-3 text-right>
                     <h2>
-                        {{expense.value | number:'1.2-2'}}
+                        {{record.value | number:'1.2-2'}}
                     </h2>
                 </ion-col>
             </ion-row>
@@ -39,7 +39,7 @@
             </ion-row>
         </ion-item>
         <ion-item *ngIf="!total" color="danger" text-center>
-            Nessuna spesa del tipo selezionato
+            Nessun elemento del tipo selezionato
         </ion-item>
     </ion-list>
 </ion-content>

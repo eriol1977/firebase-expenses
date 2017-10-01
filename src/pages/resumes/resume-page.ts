@@ -1,33 +1,52 @@
 import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavParams, NavController} from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 
-import {Type} from '../types/type';
-import {EXPENSE_TYPES} from '../types/types-provider';
-import {ResumeExpensesPage} from './resume-expenses';
+import {Type} from '../record-types/type';
+import {EXPENSE_TYPES, INCOME_TYPES} from '../record-types/types-provider';
+import {ResumeListPage} from './resume-list-page';
 
 @Component({
     templateUrl: 'resume.html'
 })
 export class ResumePage {
+
+    kind: string; // E = Expense, I = Income
     db: AngularFireDatabase;
-    expenses: any[] = new Array();
-    types: Type[] = EXPENSE_TYPES;
+    tableName : string;
+    records: any[] = new Array();
+    types: Type[];
     period: string;
     totalsMap: Map<string, number> = new Map<string, number>();
-    expensesByType: Map<string,any[]> = new Map<string,any[]>();
+    recordsByType: Map<string,any[]> = new Map<string,any[]>();
     grandTotal: number;
     extras: Map<string, boolean> = new Map<string, boolean>();
 
-    constructor(public navCtrl: NavController,
+    constructor(public navCtrl: NavController,public params: NavParams,
         db: AngularFireDatabase) {
+        
+        if(this.params.get('kind')) {
+            this.kind = this.params.get('kind');
+            if(this.kind == "E") {
+                this.types = EXPENSE_TYPES;
+                this.tableName = "/expenses";
+            }else{
+                this.types = INCOME_TYPES;
+                this.tableName = "/incomes";
+            }
+        }else{
+            this.kind = 'E';
+            this.types = EXPENSE_TYPES;
+            this.tableName = "/expenses";
+        }
+
         this.db = db;
         this.period = new Date().toISOString().substring(0, 7);
-        this.loadExpenses();
+        this.loadRecords();
     }
 
     onPeriodChanged(): void {
-        this.loadExpenses();
+        this.loadRecords();
     }
 
     getTotal(typeCode: string): number {
@@ -50,11 +69,12 @@ export class ResumePage {
         let value: number;
         let exp: any[];
         this.totalsMap = new Map<string, number>();
-        this.expensesByType = new Map<string,any[]>();
+        this.recordsByType = new Map<string,any[]>();
+        this.extras = new Map<string, boolean>();
         this.grandTotal = 0;
-        for (let expense of this.expenses) {
-            typeCode = expense.type.code;
-            value = parseFloat(expense.value);
+        for (let record of this.records) {
+            typeCode = record.type.code;
+            value = parseFloat(record.value);
             total = this.totalsMap.get(typeCode);
             if (!total) {
                 total = value;
@@ -64,30 +84,30 @@ export class ResumePage {
             this.grandTotal += value;
             this.totalsMap.set(typeCode, total);
             
-            // expenses by type, to be used by the ExpensesResume page
-            exp = this.expensesByType.get(typeCode);
+            // records by type, to be used by the RecordsResume page
+            exp = this.recordsByType.get(typeCode);
             if(!exp){
                 exp = new Array();
-                this.expensesByType.set(typeCode,exp);
+                this.recordsByType.set(typeCode,exp);
             }
-            exp.push(expense);
+            exp.push(record);
 
-            // extraordinary expenses check
-            if(expense.extra) {
+            // extraordinary records check
+            if(record.extra) {
                 this.extras.set(typeCode,true);
             }
         }
     }
 
-    private loadExpenses(): void {
-        this.db.list('/expenses', {
+    private loadRecords(): void {
+        this.db.list(this.tableName, {
             query: {
                 orderByChild: 'date',
                 startAt: this.period,
                 endAt: this.getNextPeriod()
             }
-        }).subscribe(expenses => {
-            this.expenses = expenses;
+        }).subscribe(records => {
+            this.records = records;
             this.calculateTotals();
         });
     }
@@ -105,7 +125,7 @@ export class ResumePage {
         return nextYear + "-" + nextMonthStr;
     }
     
-    showExpenses(type: Type): void {
-        this.navCtrl.push(ResumeExpensesPage, {type: type, period: this.period, expenses: this.expensesByType.get(type.code), total: this.totalsMap.get(type.code)})
+    showRecords(type: Type): void {
+        this.navCtrl.push(ResumeListPage, {type: type, period: this.period, records: this.recordsByType.get(type.code), total: this.totalsMap.get(type.code)})
     }
 }

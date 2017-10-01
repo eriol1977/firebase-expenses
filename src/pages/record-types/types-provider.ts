@@ -14,3 +14,13 @@ export const EXPENSE_TYPES: Type[] = [
     new Type("UTZ","Utenze","Luce, gas, telefono, internet, cellulare, condominio...","speedometer"),
     new Type("SCU","Scuola","Iscrizioni, corsi...","school")
 ];
+
+export const INCOME_TYPES: Type[] = [
+    new Type("AFF","Affitti","Affitti appartamenti, ecc.","home"),
+    new Type("LIB","Libri","Proventi vendita libri","book"),
+    new Type("REG","Regali","Regali ricevuti","cube"),
+    new Type("STP","Stipendi","Stipendi, salari","person"),
+    new Type("TIT","Titoli","Proventi da titoli: cedole, interessi, accredito capitale...","analytics"),
+    new Type("TRF","Trasferimenti","Trasferimenti fondi: bonifici, capitale estero...","exit"),
+    new Type("VEN","Vendite","Vendite di oggetti, ecc.","cart")
+];

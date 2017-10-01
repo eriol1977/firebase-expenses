@@ -1,24 +1,24 @@
 import {Component} from '@angular/core';
 import {NavParams} from 'ionic-angular';
 
-import {Type} from '../types/type';
+import {Type} from '../record-types/type';
 
 @Component({
-    templateUrl: 'resume-expenses.html'
+    templateUrl: 'resume-list.html'
 })
-export class ResumeExpensesPage {
+export class ResumeListPage {
     
     type: Type;
     month: string;
     year: string
-    expenses: any[];
+    records: any[];
     total: number;
     
     constructor(public params: NavParams) {
         this.type = this.params.get('type');
         this.getYear(this.params.get('period'));
         this.getMonth(this.params.get('period'));
-        this.expenses = this.params.get('expenses');
+        this.records = this.params.get('records');
         this.total = this.params.get('total');
     }
     
