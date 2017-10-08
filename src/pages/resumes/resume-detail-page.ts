@@ -4,9 +4,9 @@ import {NavParams} from 'ionic-angular';
 import {Type} from '../record-types/type';
 
 @Component({
-    templateUrl: 'resume-list.html'
+    templateUrl: 'resume-detail.html'
 })
-export class ResumeListPage {
+export class ResumeDetailPage {
     
     type: Type;
     month: string;

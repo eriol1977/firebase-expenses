@@ -1,0 +1,40 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title *ngIf="kind=='E'">Riassunto Spese (per tipo)</ion-title>
+        <ion-title *ngIf="kind=='I'">Riassunto Entrate (per tipo)</ion-title>
+    </ion-navbar>
+    <ion-toolbar color="primary">
+        <ion-item color="primary" left>
+            <ion-label color="light">Tipo</ion-label>
+            <ion-select class="my-select" interface="popover" [(ngModel)]="typeCode" (ionChange)="onTypeChanged()">
+                <ion-option *ngFor="let t of types" [value]="t.code">{{t.description}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-buttons right>
+            <ion-item color="primary">
+                <ion-label color="light">Anno</ion-label>
+                <ion-datetime displayFormat="YYYY" pickerFormat="YYYY" [(ngModel)]="year" (ionChange)="onYearChanged()"></ion-datetime>
+            </ion-item>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <button ion-item *ngFor="let month of months" (click)="showRecords(month.number)">
+            <!--ion-icon name="{{type.icon}}" item-start></ion-icon-->
+            <ion-label class="month-number">{{month.number}}</ion-label>
+            <ion-label>{{month.name}}</ion-label>
+            <ion-label *ngIf="hasExtra(month.number)">(con extra)</ion-label>
+            <ion-label text-right>{{getTotal(month.number) | number:'1.2-2'}}</ion-label>
+        </button>
+        <ion-item color="secondary">
+            <ion-icon name="" item-start></ion-icon>
+            <ion-label><h2>Totale</h2></ion-label>
+            <ion-label text-right>{{grandTotal | number:'1.2-2'}}</ion-label>
+        </ion-item>
+    </ion-list>
+</ion-content>

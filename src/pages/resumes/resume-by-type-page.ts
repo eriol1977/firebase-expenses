@@ -4,21 +4,24 @@ import {AngularFireDatabase} from 'angularfire2/database';
 
 import {Type} from '../record-types/type';
 import {EXPENSE_TYPES, INCOME_TYPES} from '../record-types/types-provider';
-import {ResumeListPage} from './resume-list-page';
+import {MONTHS} from '../../app/utility/date-utils'
+import {ResumeDetailPage} from './resume-detail-page';
 
 @Component({
-    templateUrl: 'resume.html'
+    templateUrl: 'resume-by-type.html'
 })
-export class ResumePage {
+export class ResumeByTypePage {
 
     kind: string; // E = Expense, I = Income
     db: AngularFireDatabase;
     tableName : string;
     records: any[] = new Array();
     types: Type[];
-    period: string;
+    months: string[];
+    year: string;
+    typeCode: string;
     totalsMap: Map<string, number> = new Map<string, number>();
-    recordsByType: Map<string,any[]> = new Map<string,any[]>();
+    recordsByMonth: Map<string,any[]> = new Map<string,any[]>();
     grandTotal: number;
     extras: Map<string, boolean> = new Map<string, boolean>();
 
@@ -41,60 +44,68 @@ export class ResumePage {
         }
 
         this.db = db;
-        this.period = new Date().toISOString().substring(0, 7);
+        this.year = new Date().toISOString().substring(0, 4);
+        this.months = MONTHS;
+
+        this.typeCode = this.types[0].code;
+
         this.loadRecords();
     }
 
-    onPeriodChanged(): void {
+    onTypeChanged(): void {
         this.loadRecords();
     }
 
-    getTotal(typeCode: string): number {
-        let total = this.totalsMap.get(typeCode);
+    onYearChanged(): void {
+        this.loadRecords();
+    }
+
+    getTotal(month: string): number {
+        let total = this.totalsMap.get(month);
         if (!total)
             return 0;
         return total;
     }
 
-    hasExtra(typeCode: string): boolean {
-        let result = this.extras.get(typeCode);
+    hasExtra(month: string): boolean {
+        let result = this.extras.get(month);
         if (!result)
             return false;
         return result;
     }
 
     private calculateTotals(): void {
-        let typeCode: string;
+        let month: string;
         let total: number;
         let value: number;
         let exp: any[];
         this.totalsMap = new Map<string, number>();
-        this.recordsByType = new Map<string,any[]>();
+        this.recordsByMonth = new Map<string,any[]>();
         this.extras = new Map<string, boolean>();
         this.grandTotal = 0;
         for (let record of this.records) {
-            typeCode = record.type.code;
+            month = record.date.substring(5,7);
             value = parseFloat(record.value);
-            total = this.totalsMap.get(typeCode);
+            total = this.totalsMap.get(month);
             if (!total) {
                 total = value;
             } else {
                 total += value;
             }
             this.grandTotal += value;
-            this.totalsMap.set(typeCode, total);
+            this.totalsMap.set(month, total);
             
             // records by type, to be used by the RecordsResume page
-            exp = this.recordsByType.get(typeCode);
+            exp = this.recordsByMonth.get(month);
             if(!exp){
                 exp = new Array();
-                this.recordsByType.set(typeCode,exp);
+                this.recordsByMonth.set(month,exp);
             }
             exp.push(record);
 
             // extraordinary records check
             if(record.extra) {
-                this.extras.set(typeCode,true);
+                this.extras.set(month,true);
             }
         }
     }
@@ -102,30 +113,21 @@ export class ResumePage {
     private loadRecords(): void {
         this.db.list(this.tableName, {
             query: {
-                orderByChild: 'date',
-                startAt: this.period,
-                endAt: this.getNextPeriod()
+                orderByChild: 'type/code',
+                equalTo: this.typeCode
             }
         }).subscribe(records => {
-            this.records = records;
+            this.records = [];
+            for(var i = 0; i < records.length; i++)
+                if(records[i].date.startsWith(this.year))
+                    this.records.push(records[i]);
             this.calculateTotals();
         });
     }
 
-    private getNextPeriod(): string {
-        var year = parseInt(this.period.substring(0, 4));
-        var month = parseInt(this.period.substring(5, 7));
-        var nextMonth = month + 1;
-        var nextYear = year;
-        if (nextMonth == 13) {
-            nextMonth = 1;
-            nextYear++;
-        }
-        var nextMonthStr = (nextMonth < 10 ? "0" + nextMonth : "" + nextMonth);
-        return nextYear + "-" + nextMonthStr;
-    }
-    
-    showRecords(type: Type): void {
-        this.navCtrl.push(ResumeListPage, {type: type, period: this.period, records: this.recordsByType.get(type.code), total: this.totalsMap.get(type.code)})
+    showRecords(month: string): void {
+        var type: any;
+        this.types.forEach(t => {if (t.code == this.typeCode) type = t;});
+        this.navCtrl.push(ResumeDetailPage, {type: type, period: this.year + '-' + month, records: this.recordsByMonth.get(month), total: this.totalsMap.get(month)})
     }
 }

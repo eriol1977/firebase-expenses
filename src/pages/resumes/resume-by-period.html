@@ -3,13 +3,13 @@
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title *ngIf="kind=='E'">Riassunto Spese</ion-title>
-        <ion-title *ngIf="kind=='I'">Riassunto Entrate</ion-title>
+        <ion-title *ngIf="kind=='E'">Riassunto Spese (per periodo)</ion-title>
+        <ion-title *ngIf="kind=='I'">Riassunto Entrate (per periodo)</ion-title>
     </ion-navbar>
     <ion-toolbar color="primary">
         <ion-item color="primary">
             <ion-label color="light">Mese</ion-label>
-            <ion-datetime displayFormat="MM/YYYY" pickerFormat="MMMM YYYY" [(ngModel)]="period" (ionChange)="onPeriodChanged()"></ion-datetime>
+            <ion-datetime displayFormat="MMMM YYYY" pickerFormat="MMMM YYYY" monthNames="Gennaio, Febbraio, Marzo, Aprile, Maggio, Giugno, Luglio, Agosto, Settembre, Ottobre, Novembre, Dicembre" [(ngModel)]="period" (ionChange)="onPeriodChanged()"></ion-datetime>
         </ion-item>
     </ion-toolbar>
 </ion-header>

@@ -7,8 +7,9 @@ import { MyApp } from './app.component';
 import { TypesPage } from '../pages/record-types/types-page';
 import { RecordListPage } from '../pages/records/record-list-page';
 import { RecordPage } from '../pages/records/record-page';
-import { ResumePage } from '../pages/resumes/resume-page';
-import { ResumeListPage } from '../pages/resumes/resume-list-page';
+import { ResumeByPeriodPage } from '../pages/resumes/resume-by-period-page';
+import { ResumeByTypePage } from '../pages/resumes/resume-by-type-page';
+import { ResumeDetailPage } from '../pages/resumes/resume-detail-page';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -35,8 +36,9 @@ export const firebaseConfig = {
     TypesPage,
     RecordListPage,
     RecordPage,
-    ResumePage,
-    ResumeListPage
+    ResumeByPeriodPage,
+    ResumeByTypePage,
+    ResumeDetailPage
   ],
   imports: [
     BrowserModule,
@@ -52,8 +54,9 @@ export const firebaseConfig = {
     TypesPage,
     RecordListPage,
     RecordPage,
-    ResumePage,
-    ResumeListPage
+    ResumeByPeriodPage,
+    ResumeByTypePage,
+    ResumeDetailPage
   ],
   providers: [
     StatusBar,
