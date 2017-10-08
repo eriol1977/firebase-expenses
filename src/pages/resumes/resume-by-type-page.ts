@@ -6,6 +6,7 @@ import {Type} from '../record-types/type';
 import {EXPENSE_TYPES, INCOME_TYPES} from '../record-types/types-provider';
 import {MONTHS} from '../../app/utility/date-utils'
 import {ResumeDetailPage} from './resume-detail-page';
+import {ResumeByPeriodPage} from './resume-by-period-page'
 
 @Component({
     templateUrl: 'resume-by-type.html'
@@ -128,6 +129,11 @@ export class ResumeByTypePage {
     showRecords(month: string): void {
         var type: any;
         this.types.forEach(t => {if (t.code == this.typeCode) type = t;});
-        this.navCtrl.push(ResumeDetailPage, {type: type, period: this.year + '-' + month, records: this.recordsByMonth.get(month), total: this.totalsMap.get(month)})
+        this.navCtrl.push(ResumeDetailPage, {type: type, period: this.year + '-' + month, records: this.recordsByMonth.get(month), total: this.totalsMap.get(month)});
+    }
+
+    openResumeByPeriod() : void {
+        // this replaces the page, without pushinh another on the stack
+        this.navCtrl.setPages([{page: ResumeByPeriodPage, params: {kind: this.kind}}]);
     }
 }

@@ -5,6 +5,9 @@
         </button>
         <ion-title *ngIf="kind=='E'">Riassunto Spese (per periodo)</ion-title>
         <ion-title *ngIf="kind=='I'">Riassunto Entrate (per periodo)</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="openResumeByType()"><ion-icon name="cube"></ion-icon></button>
+        </ion-buttons>
     </ion-navbar>
     <ion-toolbar color="primary">
         <ion-item color="primary">

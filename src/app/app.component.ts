@@ -27,10 +27,8 @@ export class MyApp {
     this.pages = [
         { title: 'Spese', component: RecordListPage, params: {kind: 'E'} },
         { title: 'Entrate', component: RecordListPage, params: {kind: 'I'} },
-        { title: 'Riassunto Spese (per periodo)', component: ResumeByPeriodPage, params: {kind: 'E'} },
-        { title: 'Riassunto Entrate (per periodo)', component: ResumeByPeriodPage, params: {kind: 'I'} },
-        { title: 'Riassunto Spese (per tipo)', component: ResumeByTypePage, params: {kind: 'E'} },
-        { title: 'Riassunto Entrate (per tipo)', component: ResumeByTypePage, params: {kind: 'I'} },
+        { title: 'Riassunto Spese', component: ResumeByPeriodPage, params: {kind: 'E'} },
+        { title: 'Riassunto Entrate', component: ResumeByPeriodPage, params: {kind: 'I'} },
         { title: 'Tipi di Spesa', component: TypesPage, params: {kind: 'E'} },
         { title: 'Tipi di Entrate', component: TypesPage, params: {kind: 'I'} }
     ];

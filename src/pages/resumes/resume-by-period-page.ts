@@ -5,6 +5,7 @@ import {AngularFireDatabase} from 'angularfire2/database';
 import {Type} from '../record-types/type';
 import {EXPENSE_TYPES, INCOME_TYPES} from '../record-types/types-provider';
 import {ResumeDetailPage} from './resume-detail-page';
+import {ResumeByTypePage} from './resume-by-type-page'
 
 @Component({
     templateUrl: 'resume-by-period.html'
@@ -127,5 +128,10 @@ export class ResumeByPeriodPage {
     
     showRecords(type: Type): void {
         this.navCtrl.push(ResumeDetailPage, {type: type, period: this.period, records: this.recordsByType.get(type.code), total: this.totalsMap.get(type.code)})
+    }
+
+    openResumeByType() : void {
+        // this replaces the page, without pushinh another on the stack
+        this.navCtrl.setPages([{page: ResumeByTypePage, params: {kind: this.kind}}]);
     }
 }
