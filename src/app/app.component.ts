@@ -7,6 +7,7 @@ import { TypesPage } from '../pages/record-types/types-page';
 import { RecordListPage } from '../pages/records/record-list-page';
 import { ResumeByPeriodPage } from '../pages/resumes/resume-by-period-page';
 import { ResumeByTypePage } from '../pages/resumes/resume-by-type-page';
+import { BalancePage } from '../pages/balance/balance-page';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -29,6 +30,7 @@ export class MyApp {
         { title: 'Entrate', component: RecordListPage, params: {kind: 'I'} },
         { title: 'Riassunto Spese', component: ResumeByPeriodPage, params: {kind: 'E'} },
         { title: 'Riassunto Entrate', component: ResumeByPeriodPage, params: {kind: 'I'} },
+        { title: 'Bilancio', component: BalancePage, params: {} },
         { title: 'Tipi di Spesa', component: TypesPage, params: {kind: 'E'} },
         { title: 'Tipi di Entrate', component: TypesPage, params: {kind: 'I'} }
     ];

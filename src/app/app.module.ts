@@ -10,6 +10,7 @@ import { RecordPage } from '../pages/records/record-page';
 import { ResumeByPeriodPage } from '../pages/resumes/resume-by-period-page';
 import { ResumeByTypePage } from '../pages/resumes/resume-by-type-page';
 import { ResumeDetailPage } from '../pages/resumes/resume-detail-page';
+import { BalancePage } from '../pages/balance/balance-page';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -38,7 +39,8 @@ export const firebaseConfig = {
     RecordPage,
     ResumeByPeriodPage,
     ResumeByTypePage,
-    ResumeDetailPage
+    ResumeDetailPage,
+    BalancePage
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,8 @@ export const firebaseConfig = {
     RecordPage,
     ResumeByPeriodPage,
     ResumeByTypePage,
-    ResumeDetailPage
+    ResumeDetailPage,
+    BalancePage
   ],
   providers: [
     StatusBar,

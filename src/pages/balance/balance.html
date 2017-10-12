@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Bilancio</ion-title>
+    </ion-navbar>
+    <ion-toolbar color="primary">
+        <ion-buttons right>
+            <ion-item color="primary">
+                <ion-label color="light">Anno</ion-label>
+                <ion-datetime displayFormat="YYYY" pickerFormat="YYYY" [(ngModel)]="year" (ionChange)="onYearChanged()"></ion-datetime>
+            </ion-item>
+        </ion-buttons> 
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <button ion-item *ngFor="let month of months" (click)="showRecords(month.number)">
+            <ion-label class="month-number">{{month.number}}</ion-label>
+            <ion-label>{{month.name}}</ion-label>
+            <ion-label text-right>{{getIncome(month.number) | number:'1.2-2'}}</ion-label>
+            <ion-label text-right>{{getExpense(month.number) | number:'1.2-2'}}</ion-label>
+        </button>
+        <!-- <ion-item color="secondary">
+            <ion-icon name="" item-start></ion-icon>
+            <ion-label><h2>Totale</h2></ion-label>
+            <ion-label text-right>{{grandTotal | number:'1.2-2'}}</ion-label>
+        </ion-item> -->
+    </ion-list>
+</ion-content>
