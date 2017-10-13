@@ -22,6 +22,10 @@
             <ion-label>{{month.name}}</ion-label>
             <ion-label text-right>{{getIncome(month.number) | number:'1.2-2'}}</ion-label>
             <ion-label text-right>{{getExpense(month.number) | number:'1.2-2'}}</ion-label>
+            <ion-label text-right>{{getBalance(month.number) | number:'1.2-2'}}</ion-label>
+            <ion-label text-right>{{getProgressiveIncome(month.number) | number:'1.2-2'}}</ion-label>
+            <ion-label text-right>{{getProgressiveExpense(month.number) | number:'1.2-2'}}</ion-label>
+            <ion-label text-right>{{getProgressiveBalance(month.number) | number:'1.2-2'}}</ion-label>
         </button>
         <!-- <ion-item color="secondary">
             <ion-icon name="" item-start></ion-icon>

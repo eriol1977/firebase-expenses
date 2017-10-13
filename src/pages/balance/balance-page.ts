@@ -57,6 +57,7 @@ export class BalancePage {
         let monthNumber: string;
         let value: number;
         let inc: number;
+        let prog: number;
         this.initIncomesMaps();
         
         for (let income of this.incomes) {
@@ -67,8 +68,13 @@ export class BalancePage {
             inc = this.incomesByMonth.get(monthNumber);
             inc += value;
             this.incomesByMonth.set(monthNumber, inc);
+        }
 
-            // TODO progressives
+        // progressives by month
+        this.progressiveIncomesByMonth.set(this.months[0].number,this.incomesByMonth.get(this.months[0].number));
+        for (var i=1; i < this.months.length; i++) {
+           this.progressiveIncomesByMonth.set(this.months[i].number,
+            this.incomesByMonth.get(this.months[i].number)+this.progressiveIncomesByMonth.get(this.months[i-1].number)); 
         }
     }
 
@@ -85,6 +91,7 @@ export class BalancePage {
         let monthNumber: string;
         let value: number;
         let exp: number;
+        let prog: number;
         this.initExpensesMaps();
         for (let expense of this.expenses) {
             monthNumber = expense.date.substring(5,7);
@@ -94,8 +101,13 @@ export class BalancePage {
             exp = this.expensesByMonth.get(monthNumber);
             exp += value;
             this.expensesByMonth.set(monthNumber, exp);
+        }
 
-            // TODO progressives
+        // progressives by month
+        this.progressiveExpensesByMonth.set(this.months[0].number,this.expensesByMonth.get(this.months[0].number));
+        for (var i=1; i < this.months.length; i++) {
+           this.progressiveExpensesByMonth.set(this.months[i].number,
+            this.expensesByMonth.get(this.months[i].number)+this.progressiveExpensesByMonth.get(this.months[i-1].number)); 
         }
     }
 
@@ -114,6 +126,22 @@ export class BalancePage {
 
     getExpense(monthNumber): number {
         return this.expensesByMonth.get(monthNumber);
+    }
+
+    getBalance(monthNumber): number {
+        return this.getIncome(monthNumber) - this.getExpense(monthNumber);
+    }
+
+    getProgressiveIncome(monthNumber): number {
+        return this.progressiveIncomesByMonth.get(monthNumber);
+    }
+
+    getProgressiveExpense(monthNumber): number {
+        return this.progressiveExpensesByMonth.get(monthNumber);
+    }
+
+    getProgressiveBalance(monthNumber): number {
+        return this.getProgressiveIncome(monthNumber) - this.getProgressiveExpense(monthNumber);
     }
 
     showRecords(month: string): void {
