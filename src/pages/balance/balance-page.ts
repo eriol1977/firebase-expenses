@@ -3,6 +3,7 @@ import {NavParams, NavController} from 'ionic-angular';
 import {AngularFireDatabase} from 'angularfire2/database';
 
 import {MONTHS} from '../../app/utility/date-utils'
+import {DateUtils} from '../../app/utility/date-utils'
 
 @Component({
     templateUrl: 'balance.html'
@@ -18,12 +19,15 @@ export class BalancePage {
     expensesByMonth: Map<string, number> = new Map<string, number>();
     progressiveIncomesByMonth: Map<string, number> = new Map<string, number>();
     progressiveExpensesByMonth: Map<string, number> = new Map<string, number>();
+    nextMonthNumber: string;
+    monthsToShow: any[];
 
     constructor(public navCtrl: NavController,public params: NavParams,
         db: AngularFireDatabase) {
         this.db = db;
         this.months = MONTHS;
-        this.year = new Date().toISOString().substring(0, 4);
+        this.year = DateUtils.getThisYearNumber();
+        this.nextMonthNumber = DateUtils.getNextMonthNumber();
         this.loadRecords();
     }
 
@@ -32,51 +36,71 @@ export class BalancePage {
     }
 
     private loadRecords(): void {
+        this.initIncomesMaps();
+        this.initExpensesMaps();
+        // for this year's balance, the query only gets data until the present month
+        // for past years, the query gets all months' data
+        let endMonth = (parseInt(this.year) < parseInt(DateUtils.getThisYearNumber()) ? '13' : this.nextMonthNumber);
+        this.monthsToShow = DateUtils.getMonthsUntil(parseInt(endMonth));
+        
         this.db.list('/incomes', {
             query: {
                 orderByChild: 'date',
-                startAt: this.year,
+                startAt: this.year + '-01',
+                endAt: this.year + '-' + endMonth
             }
         }).subscribe(incomes => {
             this.incomes = incomes;
-            this.calculateIncomesData();
+            this.calculateData('I');
         });
 
         this.db.list('/expenses', {
             query: {
                 orderByChild: 'date',
-                startAt: this.year,
+                startAt: this.year + '-01',
+                endAt: this.year + '-' + endMonth
             }
         }).subscribe(expenses => {
             this.expenses = expenses;
-            this.calculateExpensesData();
+            this.calculateData('E');
         }); 
     }
 
-    private calculateIncomesData() {
+    private calculateData(kind) {
         let monthNumber: string;
         let value: number;
-        let inc: number;
-        let prog: number;
-        this.initIncomesMaps();
-        
-        for (let income of this.incomes) {
-            monthNumber = income.date.substring(5,7);
-            value = parseFloat(income.value);
+        let presentValue: number;
+        let records;
+        let recordsByMonth;
+        let progressivesByMonth;
 
-            // sums incomes by month
-            inc = this.incomesByMonth.get(monthNumber);
-            inc += value;
-            this.incomesByMonth.set(monthNumber, inc);
+        if(kind == 'I') {
+            records = this.incomes;
+            recordsByMonth = this.incomesByMonth;
+            progressivesByMonth = this.progressiveIncomesByMonth;
+        }else{
+            records = this.expenses;
+            recordsByMonth = this.expensesByMonth;
+            progressivesByMonth = this.progressiveExpensesByMonth;
+        }
+        
+        for (let record of records) {
+            monthNumber = record.date.substring(5,7);
+            value = parseFloat(record.value);
+
+            // sums values by month
+            presentValue = recordsByMonth.get(monthNumber);
+            presentValue += value;
+            recordsByMonth.set(monthNumber, presentValue);
         }
 
         // progressives by month
-        this.progressiveIncomesByMonth.set(this.months[0].number,this.incomesByMonth.get(this.months[0].number));
+        progressivesByMonth.set(this.months[0].number,recordsByMonth.get(this.months[0].number));
         for (var i=1; i < this.months.length; i++) {
-           this.progressiveIncomesByMonth.set(this.months[i].number,
-            this.incomesByMonth.get(this.months[i].number)+this.progressiveIncomesByMonth.get(this.months[i-1].number)); 
+           progressivesByMonth.set(this.months[i].number,
+            recordsByMonth.get(this.months[i].number) + progressivesByMonth.get(this.months[i-1].number)); 
         }
-    }
+    } 
 
     private initIncomesMaps() {
         this.incomesByMonth = new Map<string, number>();
@@ -84,30 +108,6 @@ export class BalancePage {
         for (let month of this.months) {
              this.incomesByMonth.set(month.number, 0);
              this.progressiveIncomesByMonth.set(month.number, 0);
-        }
-    }
-
-    private calculateExpensesData() {
-        let monthNumber: string;
-        let value: number;
-        let exp: number;
-        let prog: number;
-        this.initExpensesMaps();
-        for (let expense of this.expenses) {
-            monthNumber = expense.date.substring(5,7);
-            value = parseFloat(expense.value);
-
-            // sums expenses by month
-            exp = this.expensesByMonth.get(monthNumber);
-            exp += value;
-            this.expensesByMonth.set(monthNumber, exp);
-        }
-
-        // progressives by month
-        this.progressiveExpensesByMonth.set(this.months[0].number,this.expensesByMonth.get(this.months[0].number));
-        for (var i=1; i < this.months.length; i++) {
-           this.progressiveExpensesByMonth.set(this.months[i].number,
-            this.expensesByMonth.get(this.months[i].number)+this.progressiveExpensesByMonth.get(this.months[i-1].number)); 
         }
     }
 
@@ -142,11 +142,5 @@ export class BalancePage {
 
     getProgressiveBalance(monthNumber): number {
         return this.getProgressiveIncome(monthNumber) - this.getProgressiveExpense(monthNumber);
-    }
-
-    showRecords(month: string): void {
-        /* var type: any;
-        this.types.forEach(t => {if (t.code == this.typeCode) type = t;});
-        this.navCtrl.push(ResumeDetailPage, {type: type, period: this.year + '-' + month, records: this.recordsByMonth.get(month), total: this.totalsMap.get(month)}); */
     }
 }

@@ -17,10 +17,15 @@
 
 <ion-content padding>
     <ion-grid>
-        <ion-row *ngFor="let month of months">
+        <ion-row *ngFor="let month of monthsToShow">
             <ion-col>
                 <ion-label class="month-number-balance">{{month.number}}</ion-label>
                 <ion-label>{{month.name}}</ion-label>
+            </ion-col>
+            <ion-col>
+                <ion-label text-right>Entrate</ion-label>
+                <ion-label text-right>Uscite</ion-label>
+                <ion-label text-right>Bilancio</ion-label>
             </ion-col>
             <ion-col>
                 <ion-label text-right>{{getIncome(month.number) | number:'1.2-2'}}</ion-label>
@@ -29,25 +34,11 @@
                 <ion-label *ngIf="getBalance(month.number) >= 0" class="positive-balance" text-right>{{getBalance(month.number) | number:'1.2-2'}}</ion-label>
             </ion-col>
             <ion-col>
-                <ion-label text-right>{{getProgressiveIncome(month.number) | number:'1.2-2'}}</ion-label>
-                <ion-label text-right>{{getProgressiveExpense(month.number) | number:'1.2-2'}}</ion-label>
-                <ion-label *ngIf="getProgressiveBalance(month.number) < 0" class="negative-balance" text-right>{{getProgressiveBalance(month.number) | number:'1.2-2'}}</ion-label>
-                <ion-label *ngIf="getProgressiveBalance(month.number) >= 0" class="positive-balance" text-right>{{getProgressiveBalance(month.number) | number:'1.2-2'}}</ion-label>
+                <ion-label text-right><b>{{getProgressiveIncome(month.number) | number:'1.2-2'}}</b></ion-label>
+                <ion-label text-right><b>{{getProgressiveExpense(month.number) | number:'1.2-2'}}</b></ion-label>
+                <ion-label *ngIf="getProgressiveBalance(month.number) < 0" class="negative-balance" text-right><b>{{getProgressiveBalance(month.number) | number:'1.2-2'}}</b></ion-label>
+                <ion-label *ngIf="getProgressiveBalance(month.number) >= 0" class="positive-balance" text-right><b>{{getProgressiveBalance(month.number) | number:'1.2-2'}}</b></ion-label>
             </ion-col>
         </ion-row>
     </ion-grid>
-    <!-- <ion-list>
-        <button ion-item *ngFor="let month of months" (click)="showRecords(month.number)">
-            <ion-label class="month-number">{{month.number}}</ion-label>
-            <ion-label>{{month.name}}</ion-label>
-            <ion-label text-right>{{getIncome(month.number) | number:'1.2-2'}}</ion-label>
-            <ion-label text-right>{{getExpense(month.number) | number:'1.2-2'}}</ion-label>
-            <ion-label *ngIf="getBalance(month.number) < 0" class="negative-balance" text-right>{{getBalance(month.number) | number:'1.2-2'}}</ion-label>
-            <ion-label *ngIf="getBalance(month.number) >= 0" class="positive-balance" text-right>{{getBalance(month.number) | number:'1.2-2'}}</ion-label>
-            <ion-label text-right>{{getProgressiveIncome(month.number) | number:'1.2-2'}}</ion-label>
-            <ion-label text-right>{{getProgressiveExpense(month.number) | number:'1.2-2'}}</ion-label>
-            <ion-label *ngIf="getProgressiveBalance(month.number) < 0" class="negative-balance" text-right>{{getProgressiveBalance(month.number) | number:'1.2-2'}}</ion-label>
-            <ion-label *ngIf="getProgressiveBalance(month.number) >= 0" class="positive-balance" text-right>{{getProgressiveBalance(month.number) | number:'1.2-2'}}</ion-label>
-        </button>
-    </ion-list> -->
 </ion-content>
