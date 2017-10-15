@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Limiti di Spesa</ion-title>
+    </ion-navbar>
+    <ion-toolbar color="primary">
+        <ion-item color="primary">
+            <ion-label color="light">Mese</ion-label>
+            <ion-datetime displayFormat="MMMM YYYY" pickerFormat="MMMM YYYY" monthNames="Gennaio, Febbraio, Marzo, Aprile, Maggio, Giugno, Luglio, Agosto, Settembre, Ottobre, Novembre, Dicembre" [(ngModel)]="period" (ionChange)="onPeriodChanged()"></ion-datetime>
+        </ion-item>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-card *ngFor="let type of types">
+        <ion-card-content>
+            <ion-card-title>
+                <ion-item>
+                    <ion-icon name="{{type.icon}}" item-start></ion-icon>
+                    <ion-label class="limits-type-desc">{{type.description}}</ion-label>
+                    <ion-badge item-end>100</ion-badge>
+                </ion-item>
+            </ion-card-title>
+            <ion-range min="0" max="1000" step="5" color="primary" (ionChange)="onRangeChange(type.code,$event)">
+                <ion-label range-left>0&nbsp;&nbsp;&nbsp;</ion-label>
+                <ion-label range-right>&nbsp;&nbsp;&nbsp;1000</ion-label>
+            </ion-range>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

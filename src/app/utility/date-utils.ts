@@ -93,6 +93,10 @@ export class DateUtils {
         return DateUtils.getMonthsUntil(++thisMonthNumber);
     }
 
+    static getThisYearMonth(): string {
+        return new Date().toISOString().substring(0, 7);
+    }
+
 }
 
 
